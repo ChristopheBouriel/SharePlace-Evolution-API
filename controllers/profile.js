@@ -1,11 +1,11 @@
 const connexion = require('../dataBaseAccess');
 const xssFilters = require('xss-filters');
 const jwt = require('jsonwebtoken');
-
+const fs = require('fs');
 
 
 exports.seeProfile = (req, res, next) => {
-  connexion.query(`SELECT userName, userId, firstname, lastname, serviceName, email, aboutMe FROM users WHERE userName = ?`, [req.params.userName], (error, result)=>{
+  connexion.query(`SELECT userName, firstname, lastname, serviceName, imageUrl, email, aboutMe FROM users WHERE userName = ?`, [req.params.userName], (error, result)=>{
     if(error) {res.status(500).send(error.sqlMessage)}
     else {
       const token = req.headers.authorization.split(' ')[1];
@@ -30,7 +30,7 @@ exports.modifyProfile = (req, res, next) => {
     const firstname = xssFilters.inHTMLData(req.body.firstname);
     const lastname = xssFilters.inHTMLData(req.body.lastname);
     const userName = xssFilters.inHTMLData(req.body.userName);
-    const service = xssFilters.inHTMLData(req.body.service);
+    const service = xssFilters.inHTMLData(req.body.serviceName);
     const email = xssFilters.inHTMLData(req.body.email);
     const aboutMe = xssFilters.inHTMLData(req.body.aboutMe);
     connexion.query(`UPDATE users SET firstname="${firstname}", lastname="${lastname}", 
@@ -65,3 +65,26 @@ exports.getNotifications = (req, res, next) => {
   })  
 }
 
+exports.loadPicture = (req, res, next) => {
+  picObject = { ...JSON.parse(req.body.datas) };
+  const userName =  picObject.userName;
+  let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  let filename = '';
+  connexion.query(`SELECT imageUrl FROM users WHERE userName="${userName}"`, (error, result) => {
+        if(error) {res.status(500).send(error.sqlMessage)}
+        else {
+          if (result[0].imageUrl !== null) {
+          filename = result[0].imageUrl.split('/images/')[1];
+          }
+          connexion.query(`UPDATE users SET imageUrl="${imageUrl}" WHERE userName="${userName}"`, (error, result) => {
+                if(error) {res.status(500).send(error.sqlMessage);}
+                else {
+                  if (filename !== '') {
+                  fs.unlink(`images/${filename}`, () => {});
+                  }
+                  res.status(200).send({message:"Update done"});
+                }
+              });
+        }
+      });  
+}

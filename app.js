@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const path = require('path');
 //const cors = require('cors');
 
 const userRoutes = require('./routes/user');
@@ -21,6 +22,8 @@ app.use((req, res, next) => {
   });
 
 app.use(bodyParser.json());
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/publications', publicationsRoutes);
 app.use('/api/comments', commentsRoutes);

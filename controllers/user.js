@@ -8,7 +8,8 @@ require('dotenv').config();
 exports.signup = (req, res, next) => {
     const userId = uuidv4();
     let user;
-    bcrypt.hash(req.body.userPassword, 10)
+    
+    bcrypt.hash(req.body.password, 10)
       .then(hash => {
         user = {
             userId: userId,
@@ -16,10 +17,11 @@ exports.signup = (req, res, next) => {
             userPassword: hash,
             firstname : xssFilters.inHTMLData(req.body.firstname),
             lastname: xssFilters.inHTMLData(req.body.lastname),
-            service: xssFilters.inHTMLData(req.body.service),
+            service: xssFilters.inHTMLData(req.body.serviceName),
             email: req.body.email,
             aboutMe: xssFilters.inHTMLData(req.body.aboutMe)
         }; 
+        
         connexion.query(
             `INSERT INTO users (userId, userName, userPassword, firstname, lastname, serviceName, email, aboutMe) VALUES(
                 ?,?,?,?,?,?,?,?)`, [ user.userId, user.userName, user.userPassword, user.firstname, user.lastname, user.service, user.email, user.aboutMe],
@@ -161,7 +163,7 @@ exports.testU = (req, res, next) => {
     const ooo = checkIfExists.includes(userName);    
     if (ooo === false) {
 
-      if (!req.body.userPassword) {
+      if (!req.body.password) {
         this.modifyUserName(req, res);
       } else {
         this.signup(req, res);

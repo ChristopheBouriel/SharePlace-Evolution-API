@@ -7,10 +7,9 @@ module.exports = (req, res, next) => {
     try {  
         const profileModif = { ...req.body};
         
-        
         let test1 = regex1.test(profileModif.firstname);
         let test2 = regex2.test(profileModif.lastname);
-        let test3 = regex3.test(profileModif.service);
+        let test3 = regex3.test(profileModif.serviceName);
         let test4 = regex4.test(profileModif.aboutMe);
 
           if (test1===true && test2===true && test3===true && test4===true) {
