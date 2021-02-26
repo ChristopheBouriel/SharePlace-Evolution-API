@@ -8,10 +8,12 @@ exports.getAllPublications = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.DB_TOK);
   const checkUserId = decodedToken.userId;
-  if (checkUserId) {
-    connexion.query(`SELECT id, date_publication, title, content, likes, numberComments, userName, modified, date_modif, moderated FROM publications ORDER BY date_publication DESC`, (error, result) => {
+  if (checkUserId) {    
+    connexion.query(`SELECT publications.id, publications.date_publication, publications.title, publications.content, publications.likes, publications.numberComments, publications.userName, publications.modified, publications.date_modif, publications.moderated, users.imageUrl FROM publications INNER JOIN users ON publications.userName = users.userName ORDER BY date_publication DESC`, (error, result) => {
       if(error) {res.status(500).send(error.sqlMessage)}
-      else {res.status(200).send(result);                                  
+      else {
+        
+        res.status(200).send(result);                                        
       }
     })
   } else {
@@ -23,10 +25,12 @@ exports.getOnePublication = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.DB_TOK);
   const checkUserId = decodedToken.userId;
-  if (checkUserId) { 
-    connexion.query(`SELECT id, date_publication, title, content, likes, numberComments, userName, modified, date_modif, moderated, viewed FROM publications WHERE id = ?`, [req.params.id], (error, result) => {
+  if (checkUserId) {
+    connexion.query(`SELECT publications.id, publications.date_publication, publications.title, publications.content, publications.likes, publications.numberComments, publications.userName, publications.modified, publications.date_modif, publications.moderated, publications.viewed, users.imageUrl FROM publications INNER JOIN users ON publications.userName = users.userName WHERE publications.id = ?`, [req.params.id], (error, result) => {
       if(error) {res.status(500).send(error.sqlMessage)}
-      else {res.status(200).send(result);                                  
+      else {
+        console.log(result);
+        res.status(200).send(result);                                  
       }
     })
   } else {
