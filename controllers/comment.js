@@ -3,10 +3,11 @@ const xssFilters = require('xss-filters');
 
 
 exports.getAllComments = (req, res, next) => {
-    connexion.query(`SELECT id, postId, userName, date_comment, date_modif, content, modified, moderated FROM comments WHERE postId = ?`, [req.body.publicationId], (error, result) => {
-        if(error) {
+    connexion.query(`SELECT comments.id, comments.postId, comments.userName, comments.date_comment, comments.date_modif, comments.content, comments.modified, comments.moderated, users.imageUrl FROM comments INNER JOIN users ON comments.userName = users.userName WHERE comments.postId = ?`, [req.body.publicationId], (error, result) => {
+        if(error) {            
             res.status(500).send(error.code)
         }
+        console.log(result)
         res.status(200).send(result);
     })
   }; 

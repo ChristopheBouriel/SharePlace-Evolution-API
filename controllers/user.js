@@ -73,7 +73,7 @@ exports.getAllUsers = (req, res, next) => {
   const decodedToken = jwt.verify(token, process.env.DB_TOK);
   const checkUserId = decodedToken.userId;
   if (checkUserId) {
-    connexion.query(`SELECT userName, firstname, lastname, serviceName FROM users ORDER BY userName`, (error, result) => {
+    connexion.query(`SELECT userName, firstname, lastname, serviceName, imageUrl FROM users ORDER BY userName`, (error, result) => {
     if(error) {res.status(500).send(error.sqlMessage)}
     else {res.status(200).send(result);                                  
     }

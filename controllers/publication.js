@@ -12,7 +12,6 @@ exports.getAllPublications = (req, res, next) => {
     connexion.query(`SELECT publications.id, publications.date_publication, publications.title, publications.content, publications.likes, publications.numberComments, publications.userName, publications.modified, publications.date_modif, publications.moderated, users.imageUrl FROM publications INNER JOIN users ON publications.userName = users.userName ORDER BY date_publication DESC`, (error, result) => {
       if(error) {res.status(500).send(error.sqlMessage)}
       else {
-        
         res.status(200).send(result);                                        
       }
     })
@@ -29,7 +28,6 @@ exports.getOnePublication = (req, res, next) => {
     connexion.query(`SELECT publications.id, publications.date_publication, publications.title, publications.content, publications.likes, publications.numberComments, publications.userName, publications.modified, publications.date_modif, publications.moderated, publications.viewed, users.imageUrl FROM publications INNER JOIN users ON publications.userName = users.userName WHERE publications.id = ?`, [req.params.id], (error, result) => {
       if(error) {res.status(500).send(error.sqlMessage)}
       else {
-        console.log(result);
         res.status(200).send(result);                                  
       }
     })
