@@ -7,7 +7,6 @@ exports.getAllComments = (req, res, next) => {
         if(error) {            
             res.status(500).send(error.code)
         }
-        console.log(result)
         res.status(200).send(result);
     })
   }; 
