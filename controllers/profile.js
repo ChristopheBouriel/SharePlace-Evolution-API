@@ -79,7 +79,30 @@ exports.loadPicture = (req, res, next) => {
           connexion.query(`UPDATE users SET imageUrl="${imageUrl}" WHERE userName="${userName}"`, (error, result) => {
                 if(error) {res.status(500).send(error.sqlMessage);}
                 else {
-                  if (filename !== '') {
+                  if (filename !== 'default.png') {
+                  fs.unlink(`images/${filename}`, () => {});
+                  }
+                  res.status(200).send({message:"Update done"});
+                }
+              });
+        }
+      });  
+}
+
+exports.deletePicture = (req, res, next) => {
+  const userName =  req.body.userName;
+  let imageUrl = `${req.protocol}://${req.get('host')}/images/default.png`;
+  let filename = '';
+  connexion.query(`SELECT imageUrl FROM users WHERE userName="${userName}"`, (error, result) => {
+        if(error) {res.status(500).send(error.sqlMessage)}
+        else {
+          if (result[0].imageUrl !== null) {
+          filename = result[0].imageUrl.split('/images/')[1];
+          }
+          connexion.query(`UPDATE users SET imageUrl="${imageUrl}" WHERE userName="${userName}"`, (error, result) => {
+                if(error) {res.status(500).send(error.sqlMessage);}
+                else {
+                  if (filename !== 'default.png') {
                   fs.unlink(`images/${filename}`, () => {});
                   }
                   res.status(200).send({message:"Update done"});
