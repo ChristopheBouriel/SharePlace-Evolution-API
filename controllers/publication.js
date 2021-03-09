@@ -58,7 +58,8 @@ exports.addPublication = (req, res, next) => {
 
           connexion.query(`INSERT INTO publications (userId, title, userName, content, date_publication) VALUES (?,?,?,?,?)`, 
             [userId, title, userName, content, date_publication], (error, result)=>{
-                if(error) {res.status(500).send(error.sqlMessage)}
+                if(error) {console.log(error.sqlMessage)
+                  res.status(500).send(error.sqlMessage)}
                 else {res.status(201).send({message:"Publication added"})}          
           })
           }
