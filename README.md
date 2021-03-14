@@ -18,15 +18,15 @@ Vous pourrez trouvez plus d'informations sur le projet initial et cette version 
 https://portfolio-christophe-bouriel.netlify.app  
 
 
-# Ce repository :
+## Ce repository :
 
-## L'API
+### L'API
 Ce repository concerne le back-end de l'application, développé avec **Node.js** et **Express**, et vous pouvez trouver le front-end développé avec **Angular** en suivant [ce lien](https://github.com/ChristopheBouriel/SharePlace-Evolution-UI.git).  
 
-Afin d'avoir un back-end aussi sûr que possible compte tenu de mes connaissances actuelles, j'ai essayé de suivre les recommandations de l'OWASP concernant les points sur lesquels le développeur peut intervenir.  
-J'ai installé des packages téléchargés depuis le registre npm, j'ai écrit mes propres middlewares pour la validation des entrées de l'utilisateur, mais j'ai également ajouté des vérifications sur la plupart des routes en fonction du type de requête : par exemple, afin d'être sûr que l'utilisateur le souhaite modifier ou supprimer une publication, un commentaire ou un profil, c'est le même qui l'a créé.  
+Afin d'avoir un back-end aussi sécurisé que possible compte tenu de mes connaissances actuelles, j'ai essayé de suivre les recommandations de l'OWASP concernant les points sur lesquels le développeur peut intervenir.  
+J'ai donc installé des packages téléchargés depuis le registre npm, j'ai écrit mes propres middlewares pour la validation des entrées de l'utilisateur, mais j'ai également ajouté des vérifications sur la plupart des routes en fonction du type de requête : par exemple, afin d'être sûr que l'utilisateur le souhaite modifier ou supprimer une publication, un commentaire ou un profil, c'est le même qui l'a créé.  
 
- ### Les packages pour la sécurité :
+ #### Les packages pour la sécurité :
  * [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
  * [bcrypt](https://www.npmjs.com/package/bcrypt)
  * [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
@@ -34,7 +34,7 @@ J'ai installé des packages téléchargés depuis le registre npm, j'ai écrit m
  * [helmet](https://www.npmjs.com/package/helmet)
 
 
-## Installation :
+### Installation :
 Pour installer l'API sur votre ordinateur, exécutez les instructions suivantes :
 
 1. Lancer une instance sur un serveur MySQL local et créez la base de données. Pour ceci, toutes les instructions se trouvent dans le fichier sample.sql dans le dossier racine du projet.
